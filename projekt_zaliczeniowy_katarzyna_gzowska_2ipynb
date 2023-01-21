@@ -1,0 +1,536 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": []
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "id": "OEKhLbe6cJy_"
+      },
+      "outputs": [],
+      "source": [
+        "import pandas as pd"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "trojmiasto = pd.read_csv(\"/content/trojmiasto\")"
+      ],
+      "metadata": {
+        "id": "8K84GCQ_cUGH"
+      },
+      "execution_count": 2,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "trojmiasto"
+      ],
+      "metadata": {
+        "id": "ovPggwpyc8jv"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Zadanie 1.1\n",
+        "trojmiasto[\"created_at\"] = [wiersz.replace(\"Mon\", \"Poniedziałek\").replace(\"Tue\", \"Wtorek\").replace(\"Wed\", \"Środa\").replace(\"Thu\", \"Czwartek\").replace(\"Fri\", \"Piątek\").replace(\"Sat\", \"Sobota\").replace(\"Sun\", \"Niedziela\") for wiersz in trojmiasto[\"created_at\"]]"
+      ],
+      "metadata": {
+        "id": "_i5Oc5ikK9ej"
+      },
+      "execution_count": 4,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Zadanie 1.2\n",
+        "trojmiasto[\"user_created_at\"] = [wiersz.replace(\"Jan\", \"01\").replace(\"Feb\", \"02\").replace(\"Mar\", \"03\").replace(\"Apr\", \"04\").replace(\"May\", \"05\").replace(\"Jun\", \"06\").replace(\"Jul\", \"07\").replace(\"Aug\", \"08\").replace(\"Sep\", \"09\").replace(\"Oct\", \"10\").replace(\"Nov\", \"11\").replace(\"Dec\", \"12\") for wiersz in trojmiasto[\"user_created_at\"]]"
+      ],
+      "metadata": {
+        "id": "xG-4-85ofKsA"
+      },
+      "execution_count": 5,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Zadanie 1.3\n",
+        "[element for element in trojmiasto[\"tweet_url\"]]"
+      ],
+      "metadata": {
+        "id": "r7sBoopcj8gU"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Zadanie 1.4\n",
+        "[element for element in trojmiasto[\"urls\"]]"
+      ],
+      "metadata": {
+        "id": "7r5zkxbGhhV5"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Zadanie 1.5\n",
+        "[element for element in trojmiasto[\"media\"]]"
+      ],
+      "metadata": {
+        "id": "ZCp_TLT8kBPc"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Zadanie 1.6\n",
+        "trojmiasto[\"text_without_stopwords\"] = \"\"\n",
+        "stopwords = [\"ach\",\"aj\",\"albo\",\"bardzo\",\"bez\",\"bo\",\"być\",\"ci\",\"cię\",\"ciebie\",\"co\",\"czy\",\"daleko\",\"dla\",\"dlaczego\",\"dlatego\",\"do\",\"dobrze\",\"dokąd\",\"dość\",\"dużo\",\"dwa\",\"dwaj\",\"dwie\",\"dwoje\",\"dziś\",\"dzisiaj\",\"gdyby\",\"gdzie\",\"go\",\"ich\",\"ile\",\"im\",\"inny\",\"ja\",\"ją\",\"jak\",\"jakby\",\"jaki\",\"je\",\"jeden\",\"jedna\",\"jedno\",\"jego\",\"jej\",\"jemu\",\"jeśli\",\"jest\",\"jestem\",\"jeżeli\",\"już\",\"każdy\",\"kiedy\",\"kierunku\",\"kto\",\"ku\",\"lub\",\"ma\",\"mają\",\"mam\",\"mi\",\"mną\",\"mnie\",\"moi\",\"mój\",\"moja\",\"moje\",\"może\",\"mu\",\"my\",\"na\",\"nam\",\"nami\",\"nas\",\"nasi\",\"nasz\",\"nasza\",\"nasze\",\"natychmiast\",\"nią\",\"nic\",\"nich\",\"nie\",\"niego\",\"niej\",\"niemu\",\"nigdy\",\"nim\",\"nimi\",\"niż\",\"obok\",\"od\",\"około\",\"on\",\"ona\",\"one\",\"oni\",\"ono\",\"owszem\",\"po\",\"pod\",\"ponieważ\",\"przed\",\"przedtem\",\"są\",\"sam\",\"sama\",\"się\",\"skąd\",\"tak\",\"taki\",\"tam\",\"ten\",\"to\",\"tobą\",\"tobie\",\"tu\",\"tutaj\",\"twoi\",\"twój\",\"twoja\",\"twoje\",\"ty\",\"wam\",\"wami\",\"was\",\"wasi\",\"wasz\",\"wasza\",\"wasze\",\"we\",\"więc\",\"wszystko\",\"wtedy\",\"wy\",\"żaden\",\"zawsze\",\"że\",\"a\",\"aby\",\"acz\",\"aczkolwiek\",\"ale\",\"ależ\",\"aż\",\"bardziej\",\"bowiem\",\"by\",\"byli\",\"bynajmniej\",\"był\",\"była\",\"było\",\"były\",\"będzie\",\"będą\",\"cali\",\"cała\",\"cały\",\"cokolwiek\",\"coś\",\"czasami\",\"czasem\",\"czemu\",\"czyli\",\"gdy\",\"gdyż\",\"gdziekolwiek\",\"gdzieś\",\"i\",\"inna\",\"inne\",\"innych\",\"iż\",\"jakaś\",\"jakichś\",\"jakie\",\"jakiś\",\"jakiż\",\"jakkolwiek\",\"jako\",\"jakoś\",\"jednak\",\"jednakże\",\"jeszcze\",\"kilka\",\"kimś\",\"ktokolwiek\",\"ktoś\",\"która\",\"które\",\"którego\",\"której\",\"który\",\"których\",\"którym\",\"którzy\",\"lat\",\"lecz\",\"mimo\",\"między\",\"mogą\",\"moim\",\"możliwe\",\"można\",\"musi\",\"nad\",\"naszego\",\"naszych\",\"natomiast\",\"nawet\",\"no\",\"o\",\"oraz\",\"pan\",\"pana\",\"pani\",\"podczas\",\"pomimo\",\"ponad\",\"powinien\",\"powinna\",\"powinni\",\"powinno\",\"poza\",\"prawie\",\"przecież\",\"przede\",\"przez\",\"przy\",\"roku\",\"również\",\"sobie\",\"sobą\",\"sposób\",\"swoje\",\"ta\",\"taka\",\"takie\",\"także\",\"te\",\"tego\",\"tej\",\"teraz\",\"też\",\"totobą\",\"toteż\",\"trzeba\",\"twoim\",\"twym\",\"tych\",\"tylko\",\"tym\",\"u\",\"w\",\"według\",\"wiele\",\"wielu\",\"więcej\",\"wszyscy\",\"wszystkich\",\"wszystkie\",\"wszystkim\",\"właśnie\",\"z\",\"za\",\"zapewne\",\"zeznowu\",\"znów\",\"został\",\"żadna\",\"żadne\",\"żadnych\",\"żeby\"]\n",
+        "for i, row in trojmiasto.iterrows():\n",
+        "    tekst = row[\"text\"].split(\" \")\n",
+        "    czysty = [wyraz for wyraz in tekst if wyraz.lower() not in stopwords]\n",
+        "    oczyszczony_tekst = \" \".join(czysty)\n",
+        "    trojmiasto.at[i, \"text_without_stopwords\"] = oczyszczony_tekst"
+      ],
+      "metadata": {
+        "id": "uJWyi4lmo8Ru"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "trojmiasto[\"text_without_stopwords\"]"
+      ],
+      "metadata": {
+        "id": "wpHfPY0guPqC"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Zadanie 2.1\n",
+        "trojmiasto_posortowane = trojmiasto.sort_values(\"favorite_count\", ascending=False).head(5)\n",
+        "print(trojmiasto_posortowane[\"text\"])"
+      ],
+      "metadata": {
+        "id": "Dg0HKST-ubwo"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Zadanie 2.2\n",
+        "trojmiasto_retweety = trojmiasto.sort_values(\"retweet_count\", ascending=False).head(5)\n",
+        "print(trojmiasto_retweety[\"text\"])"
+      ],
+      "metadata": {
+        "id": "FhLb_dhkyxd_"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Zadanie 2.3\n",
+        "trojmiasto[trojmiasto[\"possibly_sensitive\"] == False] [\"text\"]"
+      ],
+      "metadata": {
+        "id": "60QahEpQzXsK"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Zadanie 2.4\n",
+        "oldest_user_date = trojmiasto[\"user_created_at\"].min()\n",
+        "oldest_user = trojmiasto[trojmiasto[\"user_created_at\"] == oldest_user_date][\"user_name\"].values[0]\n",
+        "trojmiasto_oldest = trojmiasto[trojmiasto[\"user_name\"] == oldest_user]\n",
+        "print(trojmiasto_oldest[\"text\"])"
+      ],
+      "metadata": {
+        "id": "TDdcT0l31G7p"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Zadanie 2.5\n",
+        "most_followers_user = trojmiasto[\"user_followers_count\"].max()\n",
+        "most_followers = trojmiasto[trojmiasto[\"user_followers_count\"] == most_followers_user][\"user_name\"].values[0]\n",
+        "trojmiasto_followers = trojmiasto[trojmiasto[\"user_name\"] == most_followers]\n",
+        "print(trojmiasto_followers[\"text\"])"
+      ],
+      "metadata": {
+        "id": "-dUgnL-h5ChE"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Zadanie 2.6\n",
+        "trojmiasto[trojmiasto[\"user_verified\"] == True] [\"user_name\"]"
+      ],
+      "metadata": {
+        "id": "Hc0nrcGe5x0I"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Zadanie 2.7\n",
+        "trojmiasto[\"dzien_tygodnia\"] = trojmiasto[\"created_at\"].str.split().str[0]\n",
+        "dni_tygodnia = trojmiasto.groupby([\"dzien_tygodnia\"]).size().reset_index(name='counts')\n",
+        "dni_tygodnia = dni_tygodnia.sort_values(by='counts', ascending=False)\n",
+        "print(\"Najczęściej publikowano tweety w: \", dni_tygodnia.iloc[0][\"dzien_tygodnia\"])"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "2lQZZ6kvSDZp",
+        "outputId": "9131cfb9-e85f-4705-8cac-56a4fa26e015"
+      },
+      "execution_count": 30,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Najczęściej publikowano tweety w:  Poniedziałek\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "!pip install spacy -U\n",
+        "!python -m spacy download pl_core_news_sm\n",
+        "#pl_core_news_lg"
+      ],
+      "metadata": {
+        "id": "2XBK3oiATqLN",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "df98d734-9149-4e16-ce63-30b4fdc1d053"
+      },
+      "execution_count": 7,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Looking in indexes: https://pypi.org/simple, https://us-python.pkg.dev/colab-wheels/public/simple/\n",
+            "Requirement already satisfied: spacy in /usr/local/lib/python3.8/dist-packages (3.4.4)\n",
+            "Collecting spacy\n",
+            "  Downloading spacy-3.5.0-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (6.7 MB)\n",
+            "\u001b[2K     \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m6.7/6.7 MB\u001b[0m \u001b[31m48.2 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[?25hRequirement already satisfied: requests<3.0.0,>=2.13.0 in /usr/local/lib/python3.8/dist-packages (from spacy) (2.25.1)\n",
+            "Requirement already satisfied: thinc<8.2.0,>=8.1.0 in /usr/local/lib/python3.8/dist-packages (from spacy) (8.1.6)\n",
+            "Requirement already satisfied: catalogue<2.1.0,>=2.0.6 in /usr/local/lib/python3.8/dist-packages (from spacy) (2.0.8)\n",
+            "Requirement already satisfied: setuptools in /usr/local/lib/python3.8/dist-packages (from spacy) (57.4.0)\n",
+            "Requirement already satisfied: numpy>=1.15.0 in /usr/local/lib/python3.8/dist-packages (from spacy) (1.21.6)\n",
+            "Requirement already satisfied: langcodes<4.0.0,>=3.2.0 in /usr/local/lib/python3.8/dist-packages (from spacy) (3.3.0)\n",
+            "Requirement already satisfied: cymem<2.1.0,>=2.0.2 in /usr/local/lib/python3.8/dist-packages (from spacy) (2.0.7)\n",
+            "Requirement already satisfied: preshed<3.1.0,>=3.0.2 in /usr/local/lib/python3.8/dist-packages (from spacy) (3.0.8)\n",
+            "Requirement already satisfied: spacy-loggers<2.0.0,>=1.0.0 in /usr/local/lib/python3.8/dist-packages (from spacy) (1.0.4)\n",
+            "Requirement already satisfied: typer<0.8.0,>=0.3.0 in /usr/local/lib/python3.8/dist-packages (from spacy) (0.7.0)\n",
+            "Requirement already satisfied: spacy-legacy<3.1.0,>=3.0.11 in /usr/local/lib/python3.8/dist-packages (from spacy) (3.0.11)\n",
+            "Requirement already satisfied: smart-open<7.0.0,>=5.2.1 in /usr/local/lib/python3.8/dist-packages (from spacy) (6.3.0)\n",
+            "Requirement already satisfied: murmurhash<1.1.0,>=0.28.0 in /usr/local/lib/python3.8/dist-packages (from spacy) (1.0.9)\n",
+            "Requirement already satisfied: srsly<3.0.0,>=2.4.3 in /usr/local/lib/python3.8/dist-packages (from spacy) (2.4.5)\n",
+            "Requirement already satisfied: jinja2 in /usr/local/lib/python3.8/dist-packages (from spacy) (2.11.3)\n",
+            "Requirement already satisfied: packaging>=20.0 in /usr/local/lib/python3.8/dist-packages (from spacy) (21.3)\n",
+            "Requirement already satisfied: pydantic!=1.8,!=1.8.1,<1.11.0,>=1.7.4 in /usr/local/lib/python3.8/dist-packages (from spacy) (1.10.4)\n",
+            "Requirement already satisfied: pathy>=0.10.0 in /usr/local/lib/python3.8/dist-packages (from spacy) (0.10.1)\n",
+            "Requirement already satisfied: wasabi<1.2.0,>=0.9.1 in /usr/local/lib/python3.8/dist-packages (from spacy) (0.10.1)\n",
+            "Requirement already satisfied: tqdm<5.0.0,>=4.38.0 in /usr/local/lib/python3.8/dist-packages (from spacy) (4.64.1)\n",
+            "Requirement already satisfied: pyparsing!=3.0.5,>=2.0.2 in /usr/local/lib/python3.8/dist-packages (from packaging>=20.0->spacy) (3.0.9)\n",
+            "Requirement already satisfied: typing-extensions>=4.2.0 in /usr/local/lib/python3.8/dist-packages (from pydantic!=1.8,!=1.8.1,<1.11.0,>=1.7.4->spacy) (4.4.0)\n",
+            "Requirement already satisfied: idna<3,>=2.5 in /usr/local/lib/python3.8/dist-packages (from requests<3.0.0,>=2.13.0->spacy) (2.10)\n",
+            "Requirement already satisfied: urllib3<1.27,>=1.21.1 in /usr/local/lib/python3.8/dist-packages (from requests<3.0.0,>=2.13.0->spacy) (1.24.3)\n",
+            "Requirement already satisfied: certifi>=2017.4.17 in /usr/local/lib/python3.8/dist-packages (from requests<3.0.0,>=2.13.0->spacy) (2022.12.7)\n",
+            "Requirement already satisfied: chardet<5,>=3.0.2 in /usr/local/lib/python3.8/dist-packages (from requests<3.0.0,>=2.13.0->spacy) (4.0.0)\n",
+            "Requirement already satisfied: confection<1.0.0,>=0.0.1 in /usr/local/lib/python3.8/dist-packages (from thinc<8.2.0,>=8.1.0->spacy) (0.0.3)\n",
+            "Requirement already satisfied: blis<0.8.0,>=0.7.8 in /usr/local/lib/python3.8/dist-packages (from thinc<8.2.0,>=8.1.0->spacy) (0.7.9)\n",
+            "Requirement already satisfied: click<9.0.0,>=7.1.1 in /usr/local/lib/python3.8/dist-packages (from typer<0.8.0,>=0.3.0->spacy) (7.1.2)\n",
+            "Requirement already satisfied: MarkupSafe>=0.23 in /usr/local/lib/python3.8/dist-packages (from jinja2->spacy) (2.0.1)\n",
+            "Installing collected packages: spacy\n",
+            "  Attempting uninstall: spacy\n",
+            "    Found existing installation: spacy 3.4.4\n",
+            "    Uninstalling spacy-3.4.4:\n",
+            "      Successfully uninstalled spacy-3.4.4\n",
+            "\u001b[31mERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.\n",
+            "en-core-web-sm 3.4.1 requires spacy<3.5.0,>=3.4.0, but you have spacy 3.5.0 which is incompatible.\u001b[0m\u001b[31m\n",
+            "\u001b[0mSuccessfully installed spacy-3.5.0\n",
+            "/usr/local/lib/python3.8/dist-packages/torch/cuda/__init__.py:497: UserWarning: Can't initialize NVML\n",
+            "  warnings.warn(\"Can't initialize NVML\")\n",
+            "2023-01-21 21:43:59.808613: E tensorflow/stream_executor/cuda/cuda_driver.cc:271] failed call to cuInit: CUDA_ERROR_NO_DEVICE: no CUDA-capable device is detected\n",
+            "Looking in indexes: https://pypi.org/simple, https://us-python.pkg.dev/colab-wheels/public/simple/\n",
+            "Collecting pl-core-news-sm==3.5.0\n",
+            "  Downloading https://github.com/explosion/spacy-models/releases/download/pl_core_news_sm-3.5.0/pl_core_news_sm-3.5.0-py3-none-any.whl (20.2 MB)\n",
+            "\u001b[2K     \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m20.2/20.2 MB\u001b[0m \u001b[31m31.1 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[?25hRequirement already satisfied: spacy<3.6.0,>=3.5.0 in /usr/local/lib/python3.8/dist-packages (from pl-core-news-sm==3.5.0) (3.5.0)\n",
+            "Requirement already satisfied: tqdm<5.0.0,>=4.38.0 in /usr/local/lib/python3.8/dist-packages (from spacy<3.6.0,>=3.5.0->pl-core-news-sm==3.5.0) (4.64.1)\n",
+            "Requirement already satisfied: numpy>=1.15.0 in /usr/local/lib/python3.8/dist-packages (from spacy<3.6.0,>=3.5.0->pl-core-news-sm==3.5.0) (1.21.6)\n",
+            "Requirement already satisfied: catalogue<2.1.0,>=2.0.6 in /usr/local/lib/python3.8/dist-packages (from spacy<3.6.0,>=3.5.0->pl-core-news-sm==3.5.0) (2.0.8)\n",
+            "Requirement already satisfied: pathy>=0.10.0 in /usr/local/lib/python3.8/dist-packages (from spacy<3.6.0,>=3.5.0->pl-core-news-sm==3.5.0) (0.10.1)\n",
+            "Requirement already satisfied: murmurhash<1.1.0,>=0.28.0 in /usr/local/lib/python3.8/dist-packages (from spacy<3.6.0,>=3.5.0->pl-core-news-sm==3.5.0) (1.0.9)\n",
+            "Requirement already satisfied: cymem<2.1.0,>=2.0.2 in /usr/local/lib/python3.8/dist-packages (from spacy<3.6.0,>=3.5.0->pl-core-news-sm==3.5.0) (2.0.7)\n",
+            "Requirement already satisfied: spacy-legacy<3.1.0,>=3.0.11 in /usr/local/lib/python3.8/dist-packages (from spacy<3.6.0,>=3.5.0->pl-core-news-sm==3.5.0) (3.0.11)\n",
+            "Requirement already satisfied: spacy-loggers<2.0.0,>=1.0.0 in /usr/local/lib/python3.8/dist-packages (from spacy<3.6.0,>=3.5.0->pl-core-news-sm==3.5.0) (1.0.4)\n",
+            "Requirement already satisfied: pydantic!=1.8,!=1.8.1,<1.11.0,>=1.7.4 in /usr/local/lib/python3.8/dist-packages (from spacy<3.6.0,>=3.5.0->pl-core-news-sm==3.5.0) (1.10.4)\n",
+            "Requirement already satisfied: smart-open<7.0.0,>=5.2.1 in /usr/local/lib/python3.8/dist-packages (from spacy<3.6.0,>=3.5.0->pl-core-news-sm==3.5.0) (6.3.0)\n",
+            "Requirement already satisfied: srsly<3.0.0,>=2.4.3 in /usr/local/lib/python3.8/dist-packages (from spacy<3.6.0,>=3.5.0->pl-core-news-sm==3.5.0) (2.4.5)\n",
+            "Requirement already satisfied: jinja2 in /usr/local/lib/python3.8/dist-packages (from spacy<3.6.0,>=3.5.0->pl-core-news-sm==3.5.0) (2.11.3)\n",
+            "Requirement already satisfied: thinc<8.2.0,>=8.1.0 in /usr/local/lib/python3.8/dist-packages (from spacy<3.6.0,>=3.5.0->pl-core-news-sm==3.5.0) (8.1.6)\n",
+            "Requirement already satisfied: preshed<3.1.0,>=3.0.2 in /usr/local/lib/python3.8/dist-packages (from spacy<3.6.0,>=3.5.0->pl-core-news-sm==3.5.0) (3.0.8)\n",
+            "Requirement already satisfied: langcodes<4.0.0,>=3.2.0 in /usr/local/lib/python3.8/dist-packages (from spacy<3.6.0,>=3.5.0->pl-core-news-sm==3.5.0) (3.3.0)\n",
+            "Requirement already satisfied: typer<0.8.0,>=0.3.0 in /usr/local/lib/python3.8/dist-packages (from spacy<3.6.0,>=3.5.0->pl-core-news-sm==3.5.0) (0.7.0)\n",
+            "Requirement already satisfied: wasabi<1.2.0,>=0.9.1 in /usr/local/lib/python3.8/dist-packages (from spacy<3.6.0,>=3.5.0->pl-core-news-sm==3.5.0) (0.10.1)\n",
+            "Requirement already satisfied: requests<3.0.0,>=2.13.0 in /usr/local/lib/python3.8/dist-packages (from spacy<3.6.0,>=3.5.0->pl-core-news-sm==3.5.0) (2.25.1)\n",
+            "Requirement already satisfied: setuptools in /usr/local/lib/python3.8/dist-packages (from spacy<3.6.0,>=3.5.0->pl-core-news-sm==3.5.0) (57.4.0)\n",
+            "Requirement already satisfied: packaging>=20.0 in /usr/local/lib/python3.8/dist-packages (from spacy<3.6.0,>=3.5.0->pl-core-news-sm==3.5.0) (21.3)\n",
+            "Requirement already satisfied: pyparsing!=3.0.5,>=2.0.2 in /usr/local/lib/python3.8/dist-packages (from packaging>=20.0->spacy<3.6.0,>=3.5.0->pl-core-news-sm==3.5.0) (3.0.9)\n",
+            "Requirement already satisfied: typing-extensions>=4.2.0 in /usr/local/lib/python3.8/dist-packages (from pydantic!=1.8,!=1.8.1,<1.11.0,>=1.7.4->spacy<3.6.0,>=3.5.0->pl-core-news-sm==3.5.0) (4.4.0)\n",
+            "Requirement already satisfied: certifi>=2017.4.17 in /usr/local/lib/python3.8/dist-packages (from requests<3.0.0,>=2.13.0->spacy<3.6.0,>=3.5.0->pl-core-news-sm==3.5.0) (2022.12.7)\n",
+            "Requirement already satisfied: idna<3,>=2.5 in /usr/local/lib/python3.8/dist-packages (from requests<3.0.0,>=2.13.0->spacy<3.6.0,>=3.5.0->pl-core-news-sm==3.5.0) (2.10)\n",
+            "Requirement already satisfied: urllib3<1.27,>=1.21.1 in /usr/local/lib/python3.8/dist-packages (from requests<3.0.0,>=2.13.0->spacy<3.6.0,>=3.5.0->pl-core-news-sm==3.5.0) (1.24.3)\n",
+            "Requirement already satisfied: chardet<5,>=3.0.2 in /usr/local/lib/python3.8/dist-packages (from requests<3.0.0,>=2.13.0->spacy<3.6.0,>=3.5.0->pl-core-news-sm==3.5.0) (4.0.0)\n",
+            "Requirement already satisfied: blis<0.8.0,>=0.7.8 in /usr/local/lib/python3.8/dist-packages (from thinc<8.2.0,>=8.1.0->spacy<3.6.0,>=3.5.0->pl-core-news-sm==3.5.0) (0.7.9)\n",
+            "Requirement already satisfied: confection<1.0.0,>=0.0.1 in /usr/local/lib/python3.8/dist-packages (from thinc<8.2.0,>=8.1.0->spacy<3.6.0,>=3.5.0->pl-core-news-sm==3.5.0) (0.0.3)\n",
+            "Requirement already satisfied: click<9.0.0,>=7.1.1 in /usr/local/lib/python3.8/dist-packages (from typer<0.8.0,>=0.3.0->spacy<3.6.0,>=3.5.0->pl-core-news-sm==3.5.0) (7.1.2)\n",
+            "Requirement already satisfied: MarkupSafe>=0.23 in /usr/local/lib/python3.8/dist-packages (from jinja2->spacy<3.6.0,>=3.5.0->pl-core-news-sm==3.5.0) (2.0.1)\n",
+            "Installing collected packages: pl-core-news-sm\n",
+            "Successfully installed pl-core-news-sm-3.5.0\n",
+            "\u001b[38;5;2m✔ Download and installation successful\u001b[0m\n",
+            "You can now load the package via spacy.load('pl_core_news_sm')\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import spacy"
+      ],
+      "metadata": {
+        "id": "4GLG2hwKT35B",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "d6ed2e16-b387-4736-a836-aee595b73ecd"
+      },
+      "execution_count": 8,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stderr",
+          "text": [
+            "/usr/local/lib/python3.8/dist-packages/torch/cuda/__init__.py:497: UserWarning: Can't initialize NVML\n",
+            "  warnings.warn(\"Can't initialize NVML\")\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "nlp = spacy.load(\"pl_core_news_sm\")"
+      ],
+      "metadata": {
+        "id": "4W0i2rykT5-D"
+      },
+      "execution_count": 10,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Zadanie 3.1\n",
+        "trojmiasto[\"persons\"] = \"\"\n",
+        "for i, row in trojmiasto.iterrows():\n",
+        "    if isinstance(row[\"text\"], str):\n",
+        "        text = row[\"text\"]\n",
+        "        doc = nlp(text)\n",
+        "        persons = [ent.text for ent in doc.ents if ent.label_ == \"persName\"]\n",
+        "        if not persons:\n",
+        "            trojmiasto.at[i, \"persons\"] = \"\"\n",
+        "        else:\n",
+        "            trojmiasto.at[i, \"persons\"] = persons\n",
+        "    else:\n",
+        "        trojmiasto.at[i, \"persons\"] = \"\""
+      ],
+      "metadata": {
+        "id": "dClTvG4Zwowj"
+      },
+      "execution_count": 16,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Zadanie 3.2\n",
+        "trojmiasto[\"places\"] = \"\"\n",
+        "for i, row in trojmiasto.iterrows():\n",
+        "    if isinstance(row[\"text\"], str):\n",
+        "        text = row[\"text\"]\n",
+        "        doc = nlp(text)\n",
+        "        places = [ent.text for ent in doc.ents if ent.label_ == \"placeName\"]\n",
+        "        if not persons:\n",
+        "            trojmiasto.at[i, \"places\"] = \"\"\n",
+        "        else:\n",
+        "            trojmiasto.at[i, \"places\"] = places\n",
+        "    else:\n",
+        "        trojmiasto.at[i, \"places\"] = \"\""
+      ],
+      "metadata": {
+        "id": "LKMpRM6uTz88"
+      },
+      "execution_count": 14,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Zadanie 3.3\n",
+        "trojmiasto[\"organizations\"] = \"\"\n",
+        "for i, row in trojmiasto.iterrows():\n",
+        "    if isinstance(row[\"text\"], str):\n",
+        "        text = row[\"text\"]\n",
+        "        doc = nlp(text)\n",
+        "        organizations = [ent.text for ent in doc.ents if ent.label_ == \"orgName\"]\n",
+        "        if not persons:\n",
+        "            trojmiasto.at[i, \"organizations\"] = \"\"\n",
+        "        else:\n",
+        "            trojmiasto.at[i, \"organizations\"] = organizations\n",
+        "    else:\n",
+        "        trojmiasto.at[i, \"organizations\"] = \"\""
+      ],
+      "metadata": {
+        "id": "Qjayc46pVxqB"
+      },
+      "execution_count": 19,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Zadanie 4\n",
+        "import matplotlib.pyplot as plt"
+      ],
+      "metadata": {
+        "id": "PKaJWEsOWDw7"
+      },
+      "execution_count": 24,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "data = [elem for elem in trojmiasto[\"created_at\"]]\n",
+        "\n",
+        "poniedzialek = 0\n",
+        "wtorek = 0\n",
+        "sroda = 0\n",
+        "czwartek = 0\n",
+        "piatek = 0\n",
+        "sobota = 0\n",
+        "niedziela = 0\n",
+        "\n",
+        "for elem in data:\n",
+        "    if elem.find(\"Poniedziałek\") != -1:\n",
+        "        poniedzialek +=1\n",
+        "    elif elem.find(\"Wtorek\") != -1:\n",
+        "        wtorek +=1\n",
+        "    elif elem.find(\"Środa\") != -1:\n",
+        "        sroda +=1\n",
+        "    elif elem.find(\"Czwartek\") != -1:\n",
+        "        czwartek +=1\n",
+        "    elif elem.find(\"Piątek\") != -1:\n",
+        "        piatek +=1\n",
+        "    elif elem.find(\"Sobota\") != -1:\n",
+        "        sobota +=1\n",
+        "    elif elem.find(\"Niedziela\") != -1:\n",
+        "        niedziela +=1\n",
+        "\n",
+        "x = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota', 'Niedziela']\n",
+        "y = [poniedzialek, wtorek, sroda, czwartek, piatek, sobota, niedziela]\n",
+        "\n",
+        "plt.bar(x, y)\n",
+        "plt.title('Liczba tweetów per dzień tygodnia', fontsize = 12, color = '#000000', fontweight = 'bold')\n",
+        "plt.xlabel('Dzień tygodnia', fontsize = 11, color = '#000000', fontweight = 'medium')\n",
+        "plt.ylabel('Tweety (liczba)', fontsize = 11, color = '#000000', fontweight = 'medium')\n",
+        "kolory = ['#ffe6ff', '#ffcccc', '#ccf2ff', '#ffffe6', '#ccfff2', '#f2d9e6', '#ffe6cc']\n",
+        "plt.bar(x, y, color = kolory)\n",
+        "plt.show()"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 296
+        },
+        "id": "99Hduhg-Z1T8",
+        "outputId": "e94d874b-ebd8-467c-aaf5-a7b3e22690db"
+      },
+      "execution_count": 29,
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "text/plain": [
+              "<Figure size 432x288 with 1 Axes>"
+            ],
+            "image/png": "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\n"
+          },
+          "metadata": {
+            "needs_background": "light"
+          }
+        }
+      ]
+    }
+  ]
+}
